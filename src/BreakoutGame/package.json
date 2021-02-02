@@ -1,5 +1,5 @@
 {
-  "name": "game_exam",
+  "name": "breakout_game",
   "version": "1.0.0",
   "scripts": {
     "tsc": "npx tsc"

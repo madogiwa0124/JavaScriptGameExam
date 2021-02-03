@@ -1,3 +1,4 @@
 node_modules
-src/**/*.js
+src/**/index.js
+src/**/dist/*
 .DS_Store

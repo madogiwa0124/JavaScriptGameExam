@@ -4,13 +4,13 @@ import * as p5 from 'p5';
 const BACKGROUND_RGB = [237, 237, 237]
 const CANVAS_HEIGHT = 640
 const CANVAS_WIDTH = 640
+
 let generation = new Generation(CANVAS_HEIGHT, CANVAS_WIDTH)
+let pause = false
 
 const sketch = (p: p5) => {
   p.mousePressed = () => {
-    p.background(BACKGROUND_RGB)
-    generation = generation.next()
-    generation.draw(p)
+    pause = !pause
   }
 
   p.setup = () => {
@@ -20,8 +20,12 @@ const sketch = (p: p5) => {
   };
 
   p.draw = () => {
-    p.frameRate(1)
-    p.mousePressed()
+    p.frameRate(10)
+    if(!pause){
+      p.background(BACKGROUND_RGB)
+      generation = generation.next()
+      generation.draw(p)
+    }
   };
 };
 

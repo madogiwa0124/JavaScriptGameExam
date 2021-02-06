@@ -2,7 +2,7 @@
 
 ref: https://www.youtube.com/watch?v=cvxq_8jXGRE&t=217s
 
-![sample](images/life_game.png)
+![sample](images/life_game.gif)
 
 ## Getting Started
 

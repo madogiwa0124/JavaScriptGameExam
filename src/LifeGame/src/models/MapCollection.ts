@@ -48,4 +48,8 @@ export class MapCollection {
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     ]
   }
+  static random(rows: number, cols: number): MAP {
+    const map = [...Array(rows * cols)].map(() => Math.round(Math.random()) )
+    return { ROWS: rows, COLS: cols, MAP: map }
+  }
 }

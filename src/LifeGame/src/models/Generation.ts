@@ -6,12 +6,12 @@ export class Generation {
   height: number
   width: number
   cells: Cell[]
-  static readonly INITIAL_CELL_MAP = MapCollection.GINGA.MAP
-  static readonly COLS = MapCollection.GINGA.COLS
-  static readonly ROWS = MapCollection.GINGA.ROWS
+  static readonly INITIAL_CELL_MAP = MapCollection.random(30, 30)
+  static readonly COLS = Generation.INITIAL_CELL_MAP.COLS
+  static readonly ROWS = Generation.INITIAL_CELL_MAP.ROWS
   static readonly LENGTH = Generation.COLS * Generation.ROWS
 
-  constructor(height: number, width: number, cellMap=Generation.INITIAL_CELL_MAP) {
+  constructor(height: number, width: number, cellMap=Generation.INITIAL_CELL_MAP.MAP) {
     this.width = width
     this.height = height
     this.cells = this.buildCells(cellMap)

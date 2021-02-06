@@ -6,7 +6,7 @@ export class Generation {
   height: number
   width: number
   cells: Cell[]
-  static readonly INITIAL_CELL_MAP = MapCollection.random(30, 30)
+  static readonly INITIAL_CELL_MAP = MapCollection.random(80, 80)
   static readonly COLS = Generation.INITIAL_CELL_MAP.COLS
   static readonly ROWS = Generation.INITIAL_CELL_MAP.ROWS
   static readonly LENGTH = Generation.COLS * Generation.ROWS
@@ -18,6 +18,7 @@ export class Generation {
   }
 
   draw(p: p5) {
+    this.setCellColors()
     const alivingCells = this.cells.filter(cell => cell.alive)
     for(let cell of alivingCells) { cell.draw(p) }
   }
@@ -56,5 +57,9 @@ export class Generation {
     const w = Math.floor(this.width / Generation.COLS);
     const h = Math.floor(this.height / Generation.ROWS);
     return new Cell(!!value, x, y, w, h)
+  }
+
+  private setCellColors(): void {
+    this.cells.map((cell, index) => cell.setColor(this.livesAroundCellsCount(...this.indexToPosition(index))))
   }
 }

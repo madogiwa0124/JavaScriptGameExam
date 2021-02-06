@@ -1,9 +1,9 @@
 import { Generation } from './models/Generation'
 import * as p5 from 'p5';
 
-const BACKGROUND_RGB = [204, 204, 255]
-const CANVAS_HEIGHT = 480
-const CANVAS_WIDTH = 480
+const BACKGROUND_RGB = [237, 237, 237]
+const CANVAS_HEIGHT = 640
+const CANVAS_WIDTH = 640
 let generation = new Generation(CANVAS_HEIGHT, CANVAS_WIDTH)
 
 const sketch = (p: p5) => {

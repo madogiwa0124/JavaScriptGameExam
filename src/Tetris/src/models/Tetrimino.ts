@@ -1,5 +1,5 @@
 import { Block } from './Block'
-
+import { rowColLoop } from '../common/common'
 export class Tetrimino {
   static readonly O = [
     [0, 1, 1, 0],
@@ -30,15 +30,11 @@ export class Tetrimino {
 
   blocks: Block[];
   readonly minoMap: ReadonlyArray<readonly number[]>;
-  private readonly rows: number[]
-  private readonly cols: number[]
   private readonly blockWidth: number
   private readonly blockHeight: number
 
-  constructor(minoMap: ReadonlyArray<readonly number[]>, rows: number, cols: number, blockWidth: number, blockHeight: number) {
+  constructor(minoMap: ReadonlyArray<readonly number[]>, blockWidth: number, blockHeight: number) {
     this.minoMap = minoMap
-    this.rows = [...Array(rows).keys()]
-    this.cols = [...Array(cols).keys()]
     this.blockWidth = blockWidth
     this.blockHeight = blockHeight
     this.blocks = []
@@ -49,24 +45,37 @@ export class Tetrimino {
     return Tetrimino.LIST[randIndex]
   }
 
-  draw(p: p5, x:number, y: number) {
-    this.buildBlocks(x, y)
+  draw(p: p5, x:number, y: number, rows: number, cols: number) {
+    this.buildBlocks(x, y, rows, cols)
     for (const block of this.blocks) { block.draw(p) }
   }
 
-  private buildBlocks(x:number, y: number) {
-    this.blocks = this.rows.flatMap(row => {
-      return this.cols.flatMap(col => {
-        if (this.blockExists(row, col)) return this.buildBlock(col, row, x, y)
-      }).filter((val): val is Block => typeof(val) !== 'undefined')
+  canMove(nextX: number, nextY: number, MaxY: number, fields: number[][]): boolean {
+    let result = true
+    rowColLoop(this.minoMap.length, this.minoMap[0].length, (y: number, x: number) => {
+      if (this.minoMap[y][x]) {
+        const nextUnderGraund = nextY + y >= MaxY
+        const nextExitsBlock = fields[nextY + y] && fields[nextY + y][nextX + x]
+        if (nextUnderGraund || nextExitsBlock) result = false;
+      }
+    })
+    return result;
+  }
+
+  private buildBlocks(x:number, y: number, rows: number, cols: number) {
+    this.blocks = []
+    rowColLoop(rows, cols, (rowIndex, colIndex) => {
+      if (this.blockExists(rowIndex, colIndex) && this.buildBlock(colIndex, rowIndex, x, y)) {
+        this.blocks.push(this.buildBlock(colIndex, rowIndex, x, y))
+      }
     })
   }
 
-  private buildBlock(col: number, row: number, x:number, y: number): Block {
-    return new Block((x + col) * this.blockWidth, (y + row) * this.blockHeight, this.blockWidth, this.blockHeight)
+  private buildBlock(colIndex: number, rowIndex: number, x:number, y: number): Block {
+    return new Block((x + colIndex) * this.blockWidth, (y + rowIndex) * this.blockHeight, this.blockWidth, this.blockHeight)
   }
 
-  private blockExists(row: number, col: number): boolean {
-    return !!(this.minoMap[row] && this.minoMap[row][col])
+  private blockExists(rowIndex: number, colIndex: number): boolean {
+    return !!(this.minoMap[rowIndex] && this.minoMap[rowIndex][colIndex])
   }
 }

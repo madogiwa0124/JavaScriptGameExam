@@ -27,6 +27,7 @@ export class Tetrimino {
   ] as const
   static readonly I = [[1, 1, 1, 1], [0, 0, 0, 0]] as const
   static readonly LIST = [Tetrimino.O, Tetrimino.S, Tetrimino.Z, Tetrimino.J, Tetrimino.L, Tetrimino.T, Tetrimino.I]
+  static readonly COLORS = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];
 
   blocks: Block[];
   readonly minoMap: ReadonlyArray<readonly number[]>;
@@ -50,13 +51,14 @@ export class Tetrimino {
     for (const block of this.blocks) { block.draw(p) }
   }
 
-  canMove(nextX: number, nextY: number, MaxY: number, fields: number[][]): boolean {
+  canMove(nextX: number, nextY: number, maxX:number, maxY: number, fields: number[][]): boolean {
     let result = true
     rowColLoop(this.minoMap.length, this.minoMap[0].length, (y: number, x: number) => {
       if (this.minoMap[y][x]) {
-        const nextUnderGraund = nextY + y >= MaxY
+        const nextUnderGraund = nextY + y >= maxY
+        const nextSideWall = 0 > nextX + x || nextX + x >= maxX
         const nextExitsBlock = fields[nextY + y] && fields[nextY + y][nextX + x]
-        if (nextUnderGraund || nextExitsBlock) result = false;
+        if (nextUnderGraund || nextExitsBlock || nextSideWall) result = false;
       }
     })
     return result;

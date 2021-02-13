@@ -52,6 +52,11 @@ const sketch = (p: p5) => {
     } else {
       field.fix(currentMino, position.x, position.y);
       field.clear()
+      if(field.isGameOver()) {
+        alert('GAME OVER!!')
+        document.location.reload()
+        p.noLoop()
+      }
       currentMino = new Tetrimino(Tetrimino.randomMap(), BLOCK_WIDTH, BLOCK_HEIGHT)
       position.reset()
     }

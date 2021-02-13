@@ -32,6 +32,10 @@ export class Field {
     })
   }
 
+  isGameOver(): boolean {
+    return this.map[0].reduce((sum, val) => sum + val) > 0
+  }
+
   private fixedBlocks(blockWidth: number, blockHeight: number): Block[] {
     let blocks: Block[] = []
     rowColLoop(this.map.length, this.map[0].length, (y: number, x: number) => {

@@ -2,35 +2,52 @@ import { Block } from './Block'
 import { rowColLoop } from '../common/common'
 export class Tetrimino {
   static readonly O = [
+    [0, 0, 0, 0],
     [0, 1, 1, 0],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
+    [0, 0, 0, 0],
   ] as const
   static readonly S = [
+    [0, 0, 0, 0],
     [0, 2, 2, 0],
-    [2, 2, 0, 0]
+    [2, 2, 0, 0],
+    [0, 0, 0, 0],
   ] as const
   static readonly Z = [
+    [0, 0, 0, 0],
     [0, 3, 3, 0],
-    [0, 0, 3, 3]
+    [0, 0, 3, 3],
+    [0, 0, 0, 0],
   ] as const
   static readonly J = [
+    [0, 0, 0, 0],
     [4, 0, 0, 0],
-    [4, 4, 4, 0]
+    [4, 4, 4, 0],
+    [0, 0, 0, 0],
   ] as const
   static readonly L = [
+    [0, 0, 0, 0],
     [5, 5, 5, 0],
-    [5, 0, 0, 0]
+    [5, 0, 0, 0],
+    [0, 0, 0, 0],
   ] as const
   static readonly T = [
+    [0, 0, 0, 0],
     [0, 6, 0, 0],
-    [6, 6, 6, 0]
+    [6, 6, 6, 0],
+    [0, 0, 0, 0],
   ] as const
-  static readonly I = [[7, 7, 7, 7], [0, 0, 0, 0]] as const
+  static readonly I = [
+    [0, 0, 0, 0],
+    [7, 7, 7, 7],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ] as const
   static readonly LIST = [Tetrimino.O, Tetrimino.S, Tetrimino.Z, Tetrimino.J, Tetrimino.L, Tetrimino.T, Tetrimino.I]
   static readonly COLORS = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];
 
   blocks: Block[];
-  readonly minoMap: ReadonlyArray<readonly number[]>;
+  minoMap: ReadonlyArray<readonly number[]>;
   private readonly blockWidth: number
   private readonly blockHeight: number
 
@@ -49,6 +66,15 @@ export class Tetrimino {
   draw(p: p5, x:number, y: number, rows: number, cols: number) {
     this.buildBlocks(x, y, rows, cols)
     for (const block of this.blocks) { block.draw(p) }
+  }
+
+  rotate() {
+    // NOTE: minoMapと行数列数をあわせた[[], [], [], []]で初期化
+    let rotated: number[][] = this.minoMap.map(() => []);
+    rowColLoop(this.minoMap.length, this.minoMap[0].length, (x, y) => {
+      rotated[y][x] = this.minoMap[x][-y + 3];
+    })
+    this.minoMap = rotated;
   }
 
   canMove(nextX: number, nextY: number, maxX:number, maxY: number, fields: number[][]): boolean {

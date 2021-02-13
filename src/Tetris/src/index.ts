@@ -12,7 +12,7 @@ const ROWS = 20
 const BLOCK_WIDTH  = CANVAS_WIDTH / COLS
 const BLOCK_HEIGHT = CANVAS_HEIGHT / ROWS
 
-let position = new Position(3, 0)
+let position = new Position(3, -1)
 let currentMino = new Tetrimino(Tetrimino.randomMap(), BLOCK_WIDTH, BLOCK_HEIGHT)
 let field = new Field(ROWS, COLS)
 let controller = new Controller(document.body)
@@ -23,7 +23,7 @@ document.body.addEventListener(controller.eventName, ((event: CustomEvent<{key: 
     case 'left':   if(currentMinoCanMove(-1,  0)) position.x -= 1; break
     case 'right':  if(currentMinoCanMove(+1,  0)) position.x += 1; break
     case 'down':   if(currentMinoCanMove( 0, +1)) position.y += 1; break
-    case 'rotate': if(currentMinoCanMove( 0,  0)) break
+    case 'rotate': if(currentMinoCanMove( 0,  0)) currentMino.rotate(); break
   }
 })  as EventListener)
 

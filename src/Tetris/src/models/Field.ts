@@ -23,7 +23,8 @@ export class Field {
     let blocks: Block[] = []
     rowColLoop(this.map.length, this.map[0].length, (y: number, x: number) => {
       if(this.map[y][x]) {
-        blocks.push(new Block(x * blockWidth, y * blockHeight, blockWidth, blockHeight))
+        const color = Tetrimino.COLORS[this.map[y][x] - 1]
+        blocks.push(new Block(x * blockWidth, y * blockHeight, blockWidth, blockHeight, color))
       };
     })
     return blocks

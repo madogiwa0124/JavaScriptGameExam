@@ -6,26 +6,26 @@ export class Tetrimino {
     [0, 1, 1, 0]
   ] as const
   static readonly S = [
-    [0, 1, 1, 0],
-    [1, 1, 0, 0]
+    [0, 2, 2, 0],
+    [2, 2, 0, 0]
   ] as const
   static readonly Z = [
-    [0, 1, 1, 0],
-    [0, 0, 1, 1]
+    [0, 3, 3, 0],
+    [0, 0, 3, 3]
   ] as const
   static readonly J = [
-    [1, 0, 0, 0],
-    [1, 1, 1, 0]
+    [4, 0, 0, 0],
+    [4, 4, 4, 0]
   ] as const
   static readonly L = [
-    [1, 1, 1, 0],
-    [1, 0, 0, 0]
+    [5, 5, 5, 0],
+    [5, 0, 0, 0]
   ] as const
   static readonly T = [
-    [0, 1, 0, 0],
-    [1, 1, 1, 0]
+    [0, 6, 0, 0],
+    [6, 6, 6, 0]
   ] as const
-  static readonly I = [[1, 1, 1, 1], [0, 0, 0, 0]] as const
+  static readonly I = [[7, 7, 7, 7], [0, 0, 0, 0]] as const
   static readonly LIST = [Tetrimino.O, Tetrimino.S, Tetrimino.Z, Tetrimino.J, Tetrimino.L, Tetrimino.T, Tetrimino.I]
   static readonly COLORS = ["cyan", "yellow", "green", "red", "blue", "orange", "magenta"];
 
@@ -67,14 +67,15 @@ export class Tetrimino {
   private buildBlocks(x:number, y: number, rows: number, cols: number) {
     this.blocks = []
     rowColLoop(rows, cols, (rowIndex, colIndex) => {
-      if (this.blockExists(rowIndex, colIndex) && this.buildBlock(colIndex, rowIndex, x, y)) {
+      if (this.blockExists(rowIndex, colIndex)) {
         this.blocks.push(this.buildBlock(colIndex, rowIndex, x, y))
       }
     })
   }
 
   private buildBlock(colIndex: number, rowIndex: number, x:number, y: number): Block {
-    return new Block((x + colIndex) * this.blockWidth, (y + rowIndex) * this.blockHeight, this.blockWidth, this.blockHeight)
+    const color = Tetrimino.COLORS[this.minoMap[rowIndex][colIndex] - 1]
+    return new Block((x + colIndex) * this.blockWidth, (y + rowIndex) * this.blockHeight, this.blockWidth, this.blockHeight, color)
   }
 
   private blockExists(rowIndex: number, colIndex: number): boolean {

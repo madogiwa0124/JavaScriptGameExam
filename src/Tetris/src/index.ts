@@ -23,7 +23,11 @@ document.body.addEventListener(controller.eventName, ((event: CustomEvent<{key: 
     case 'left':   if(currentMinoCanMove(-1,  0)) position.x -= 1; break
     case 'right':  if(currentMinoCanMove(+1,  0)) position.x += 1; break
     case 'down':   if(currentMinoCanMove( 0, +1)) position.y += 1; break
-    case 'rotate': if(currentMinoCanMove( 0,  0)) currentMino.rotate(); break
+    case 'rotate':
+      const beforeMino = currentMino
+      currentMino.rotate()
+      if(!currentMinoCanMove( 0,  0)) currentMino = beforeMino
+      break;
   }
 })  as EventListener)
 
@@ -47,6 +51,7 @@ const sketch = (p: p5) => {
       position.y += 1;
     } else {
       field.fix(currentMino, position.x, position.y);
+      field.clear()
       currentMino = new Tetrimino(Tetrimino.randomMap(), BLOCK_WIDTH, BLOCK_HEIGHT)
       position.reset()
     }

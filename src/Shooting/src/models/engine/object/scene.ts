@@ -22,8 +22,8 @@ export class Scene extends EventDispatcher {
 
   add(actor: Actor) {
     this.actors.push(actor);
-    actor.addEventLisner("spawnactor", (e) => this.add(e.target));
-    actor.addEventLisner("destroy", (e) => this.addDestroyedActor(e.target));
+    actor.addEventListener("spawnactor", (e) => this.add(e.target));
+    actor.addEventListener("destroy", (e) => this.addDestroyedActor(e.target));
   }
 
   remove(actor: Actor) {
@@ -51,7 +51,7 @@ export class Scene extends EventDispatcher {
   private hitTest() {
     const length = this.actors.length;
     for (let i = 0; i < length - 1; i++) {
-      for (let j = i + 1; j < length - 1; j++) {
+      for (let j = i + 1; j < length; j++) {
         const [actor1, actor2] = [this.actors[i], this.actors[j]];
         const hit = actor1.hitArea.hitTest(actor2.hitArea);
         if (hit) {

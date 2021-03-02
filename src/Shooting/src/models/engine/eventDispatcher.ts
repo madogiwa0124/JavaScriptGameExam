@@ -5,7 +5,7 @@ export class EventDispatcher {
     this.eventLisners = {};
   }
 
-  addEventLisner(type: string, callback: (...args: any[]) => void) {
+  addEventListener(type: string, callback: (...args: any[]) => void) {
     if (this.eventLisners[type] == undefined) this.eventLisners[type] = [];
     this.eventLisners[type].push(callback);
   }

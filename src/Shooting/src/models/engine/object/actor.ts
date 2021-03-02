@@ -17,6 +17,10 @@ export class Actor extends EventDispatcher {
     this.hitArea = hitArea;
     this.hitAreaOffsetX = hitArea.x;
     this.hitAreaOffsetY = hitArea.y;
+    // NOTE: typescriptだとsetのoverrideはconstructorで
+    // 上手く動かないので明示的にhitAreaを更新
+    this.hitArea.x = this._x + this.hitAreaOffsetX;
+    this.hitArea.y = this._y + this.hitAreaOffsetY;
     this.tags = tags;
   }
 
@@ -29,7 +33,7 @@ export class Actor extends EventDispatcher {
   }
 
   spawnActor(actor: Actor) {
-    this.dispatchEvent("spawn-actor", new GameEvent(actor));
+    this.dispatchEvent("spawnactor", new GameEvent(actor));
   }
 
   destory() {

@@ -33,7 +33,7 @@ export class Game {
 
   changeScene(newScene: Scene) {
     this.currentScene = newScene;
-    this.currentScene.addEventLisner("changescene", (e) => this.changeScene(e.target));
+    this.currentScene.addEventListener("changescene", (e) => this.changeScene(e.target));
     console.log(`${newScene.name}が初期化されました。`);
   }
 
